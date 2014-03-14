@@ -10,17 +10,17 @@ html = htmlTreeParse(url,useInternalNodes = TRUE)
 
 # Find the species name that this page is about
 
-speciesname = getNodeSet(html, "//td[contains(.,'species information') and not(.//*)]/../../tr[3]/td[1]");speciesname
+speciesname = getNodeSet(html, "//td[contains(.,'species information') and not(.//*)]/../../tr[3]/td[1]")
 speciesname = xmlValue(speciesname[[1]])
 
 # Find the family name for our species
 
-family = getNodeSet(html, "//td[contains(.,'species information') and not(.//*)]/../../tr[3]/td[2]");family
-family = xmlValue(family[[1]]);family
+family = getNodeSet(html, "//td[contains(.,'species information') and not(.//*)]/../../tr[3]/td[2]")
+family = xmlValue(family[[1]])
 
 # Find Grimes strategy for our plant
 
-grime = getNodeSet(html, "//td[contains(.,'Strategy type') and not(.//*)]/../td[2]/a");grime
+grime = getNodeSet(html, "//td[contains(.,'Strategy type') and not(.//*)]/../td[2]/a")
 if(length(grime) == 0){grime = NA} else {grime = xmlValue(grime[[1]])}
 
 # Bind results to a data frame
