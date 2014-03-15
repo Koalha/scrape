@@ -9,7 +9,7 @@ specs = list("Picea abies","Pinus sylvestris","Betula pubescens","Eristalis arbu
 #BEGIN
 ##
 
-genusweb = function(specieslist){
+genusweb = function(specieslist = specs){
 
 options(strinsAsFactors = FALSE)
 require(XML)
@@ -48,13 +48,29 @@ return(genusurls)
 
 # remove: ULRS = genusweb(specs)
 
+#! In the next function you have an absolute reference to species list 'specs'.
+#! When you combine these functions, remember to change it to point at the species
+#! list provided to genusweb() or what ever function it will be
+
 speciesurls = function(genaindaweb=ULRS){
 
-for(i in seq(along=genaindaweb$url)){
-html = htmlTreeParse(genaindaweb$url[i], useInternalNodes = TRUE)
-specsofgenus = specs[sapply(sapply(specs, strsplit, " "),"[",1)==genaindaweb$genus[i]]
-}
+speciesandurls = NULL	# Create data frame for results based on our species list
 
+for(i in seq(along=genaindaweb$url)){	# Loop through the page of each genus
+
+html = htmlTreeParse(genaindaweb$url[i], useInternalNodes = TRUE)
+specsofgenus = specs[sapply(sapply(specs, strsplit, " "),"[",1)==genaindaweb$genus[i]] # get all the species in our list that belong to the genus being processed
+
+   for(i in seq(along=specsofgenus)){	# Go through each species
+   specurl = getNodeSet(html, paste0("//a[contains(.,'",specsofgenus[i],"') and not(.//*)]"))
+   if(length(specurl)==0){specurl = NA}
+   else specurl = gsub("amp;","",gsub("/./","/",paste0("http://www2.ufz.de",strsplit(toString.XMLNode(specurl[[1]]),'"')[[1]][2])))
+   speciesandurls = rbind(speciesandurls,c(specsofgenus[i],specurl))
+   }
+
+
+}
+return(speciesandurls)
 }
 
 ###
