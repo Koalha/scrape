@@ -29,7 +29,6 @@ specsofgenus = specs[sapply(sapply(specs, strsplit, " "),"[",1)==genaindaweb$gen
 }
 
 }
-speciesandurls = as.data.frame(speciesandurls)
-# add names
+speciesandurls = data.frame(species = unlist(speciesandurls[,1]),url = unlist(speciesandurls[,2])) # SET stringsAsFactors AS FALSE!!!!
 return(speciesandurls)
 }
