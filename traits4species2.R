@@ -157,8 +157,7 @@ multibf = function(speciesandurls){ # remember, stringsAsFactors must be FALSE!!
 df = NULL	# create a data frame for our results
 
    for(i in seq(along = speciesandurls$url)){
-   row = (species = speciesandurls$species[i],speciesquery(speciesandurls$url[i]))
-   df = rbind(df,row)
+   df = rbind(df,cbind(species = speciesandurls$species[i],speciesquery(speciesandurls$url[i])))
    }
 
 return(df)
